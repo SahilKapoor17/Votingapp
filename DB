@@ -1,0 +1,216 @@
+
+[root@ip-172-31-34-151 ~]# kubectl get pods
+NAME                      READY   STATUS    RESTARTS   AGE
+db-b54cd94f4-2dw7w        1/1     Running   0          8m51s
+redis-868d64d78-v2kqp     1/1     Running   0          8m51s
+result-5d57b59f4b-j5sfb   1/1     Running   0          8m50s
+vote-94849dc97-wv8x2      1/1     Running   0          6m16s
+worker-dd46d7584-72frg    1/1     Running   0          101s
+[root@ip-172-31-34-151 ~]#
+[root@ip-172-31-34-151 ~]#
+[root@ip-172-31-34-151 ~]# kubectl delete pod db-b54cd94f4-2dw7w
+pod "db-b54cd94f4-2dw7w" deleted
+[root@ip-172-31-34-151 ~]#
+
+
+[ec2-user@ip-172-31-34-151 ~]$ kubectl get pods
+NAME                      READY   STATUS    RESTARTS   AGE
+db-b54cd94f4-2dw7w        1/1     Running   0          2m27s
+redis-868d64d78-v2kqp     1/1     Running   0          2m27s
+result-5d57b59f4b-j5sfb   1/1     Running   0          2m26s
+vote-94849dc97-zxxxz      1/1     Running   0          2m26s
+worker-dd46d7584-bpftw    1/1     Running   0          2m26s
+[ec2-user@ip-172-31-34-151 ~]$ kubectl delete pod vote-94849dc97-zxxxz
+pod "vote-94849dc97-zxxxz" deleted
+[ec2-user@ip-172-31-34-151 ~]$ ^C
+[ec2-user@ip-172-31-34-151 ~]$
+[ec2-user@ip-172-31-34-151 ~]$
+[ec2-user@ip-172-31-34-151 ~]$
+[ec2-user@ip-172-31-34-151 ~]$
+[ec2-user@ip-172-31-34-151 ~]$
+[ec2-user@ip-172-31-34-151 ~]$
+[ec2-user@ip-172-31-34-151 ~]$
+[ec2-user@ip-172-31-34-151 ~]$ kubectl logs db-b54cd94f4-2dw7w -f
+The files belonging to this database system will be owned by user "postgres".
+This user must also own the server process.
+
+The database cluster will be initialized with locale "en_US.utf8".
+The default database encoding has accordingly been set to "UTF8".
+The default text search configuration will be set to "english".
+
+Data page checksums are disabled.
+
+fixing permissions on existing directory /var/lib/postgresql/data ... ok
+creating subdirectories ... ok
+selecting default max_connections ... 100
+selecting default shared_buffers ... 128MB
+creating configuration files ... ok
+creating template1 database in /var/lib/postgresql/data/base/1 ... ok
+initializing pg_authid ... ok
+setting password ... ok
+initializing dependencies ... ok
+creating system views ... ok
+loading system objects' descriptions ... ok
+creating collations ... ok
+creating conversions ... ok
+creating dictionaries ... ok
+setting privileges on built-in objects ... ok
+creating information schema ... ok
+loading PL/pgSQL server-side language ... ok
+vacuuming database template1 ... ok
+copying template1 to template0 ... ok
+copying template1 to postgres ... ok
+syncing data to disk ... ok
+
+WARNING: enabling "trust" authentication for local connections
+You can change this by editing pg_hba.conf or using the option -A, or
+--auth-local and --auth-host, the next time you run initdb.
+
+Success. You can now start the database server using:
+
+    postgres -D /var/lib/postgresql/data
+or
+    pg_ctl -D /var/lib/postgresql/data -l logfile start
+
+****************************************************
+WARNING: No password has been set for the database.
+         This will allow anyone with access to the
+         Postgres port to access your database. In
+         Docker's default configuration, this is
+         effectively any other container on the same
+         system.
+
+         Use "-e POSTGRES_PASSWORD=password" to set
+         it in "docker run".
+****************************************************
+waiting for server to start....LOG:  database system was shut down at 2023-10-03 03:24:18 UTC
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ done
+server started
+
+/usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+
+LOG:  received fast shutdown request
+LOG:  aborting any active transactions
+LOG:  autovacuum launcher shutting down
+LOG:  shutting down
+waiting for server to shut down....LOG:  database system is shut down
+ done
+server stopped
+
+PostgreSQL init process complete; ready for start up.
+
+LOG:  database system was shut down at 2023-10-03 03:24:19 UTC
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ERROR:  duplicate key value violates unique constraint "votes_id_key"
+DETAIL:  Key (id)=(8cd923caff57c96) already exists.
+STATEMENT:  INSERT INTO votes (id, vote) VALUES ($1, $2)
+ERROR:  duplicate key value violates unique constraint "votes_id_key"
+DETAIL:  Key (id)=(8cd923caff57c96) already exists.
+STATEMENT:  INSERT INTO votes (id, vote) VALUES ($1, $2)
+LOG:  received smart shutdown request
+LOG:  autovacuum launcher shutting down
+ERROR:  duplicate key value violates unique constraint "votes_id_key"
+DETAIL:  Key (id)=(8cd923caff57c96) already exists.
+STATEMENT:  INSERT INTO votes (id, vote) VALUES ($1, $2)
+rpc error: code = Unknown desc = Error: No such container: 5496f2e347fbb99e697893098ca6bb9ed9259a7003d5a1303cecbc55ec16ef7c[ec2-user@ip-172-31-34-151 ~]$
+[ec2-user@ip-172-31-34-151 ~]$
+[ec2-user@ip-172-31-34-151 ~]$
+
+[root@ip-172-31-34-151 ~]# kubectl get pods
+NAME                      READY   STATUS    RESTARTS   AGE
+db-b54cd94f4-nzmrd        1/1     Running   0          51s
+redis-868d64d78-v2kqp     1/1     Running   0          10m
+result-5d57b59f4b-j5sfb   1/1     Running   1          10m
+vote-94849dc97-wv8x2      1/1     Running   0          7m45s
+worker-dd46d7584-72frg    1/1     Running   1          3m10s
+[root@ip-172-31-34-151 ~]# kubectl logs db-b54cd94f4-nzmrd -f
+The files belonging to this database system will be owned by user "postgres".
+This user must also own the server process.
+
+The database cluster will be initialized with locale "en_US.utf8".
+The default database encoding has accordingly been set to "UTF8".
+The default text search configuration will be set to "english".
+
+Data page checksums are disabled.
+
+fixing permissions on existing directory /var/lib/postgresql/data ... ok
+creating subdirectories ... ok
+selecting default max_connections ... 100
+selecting default shared_buffers ... 128MB
+creating configuration files ... ok
+creating template1 database in /var/lib/postgresql/data/base/1 ... ok
+initializing pg_authid ... ok
+setting password ... ok
+initializing dependencies ... ok
+creating system views ... ok
+loading system objects' descriptions ... ok
+creating collations ... ok
+creating conversions ... ok
+creating dictionaries ... ok
+setting privileges on built-in objects ... ok
+creating information schema ... ok
+loading PL/pgSQL server-side language ... ok
+vacuuming database template1 ... ok
+copying template1 to template0 ... ok
+copying template1 to postgres ... ok
+syncing data to disk ... ok
+
+WARNING: enabling "trust" authentication for local connections
+You can change this by editing pg_hba.conf or using the option -A, or
+--auth-local and --auth-host, the next time you run initdb.
+
+Success. You can now start the database server using:
+
+    postgres -D /var/lib/postgresql/data
+or
+    pg_ctl -D /var/lib/postgresql/data -l logfile start
+
+****************************************************
+WARNING: No password has been set for the database.
+         This will allow anyone with access to the
+         Postgres port to access your database. In
+         Docker's default configuration, this is
+         effectively any other container on the same
+         system.
+
+         Use "-e POSTGRES_PASSWORD=password" to set
+         it in "docker run".
+****************************************************
+waiting for server to start....LOG:  database system was shut down at 2023-10-03 03:33:44 UTC
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ done
+server started
+
+/usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+
+LOG:  received fast shutdown request
+LOG:  aborting any active transactions
+LOG:  autovacuum launcher shutting down
+LOG:  shutting down
+waiting for server to shut down....LOG:  database system is shut down
+ done
+server stopped
+
+PostgreSQL init process complete; ready for start up.
+
+LOG:  database system was shut down at 2023-10-03 03:33:46 UTC
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ERROR:  relation "votes" does not exist at character 38
+STATEMENT:  SELECT vote, COUNT(id) AS count FROM votes GROUP BY vote
+ERROR:  relation "votes" does not exist at character 38
+STATEMENT:  SELECT vote, COUNT(id) AS count FROM votes GROUP BY vote
+ERROR:  relation "votes" does not exist at character 38
+STATEMENT:  SELECT vote, COUNT(id) AS count FROM votes GROUP BY vote
+ERROR:  duplicate key value violates unique constraint "votes_id_key"
+DETAIL:  Key (id)=(8cd923caff57c96) already exists.
+STATEMENT:  INSERT INTO votes (id, vote) VALUES ($1, $2)
+
