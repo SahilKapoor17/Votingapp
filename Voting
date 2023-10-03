@@ -1,0 +1,121 @@
+[ec2-user@ip-172-31-34-151 ~]$ cd $home
+[ec2-user@ip-172-31-34-151 ~]$ yum install git -y
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+You need to be root to perform this command.
+[ec2-user@ip-172-31-34-151 ~]$ sudo su -
+Last login: Fri Sep 29 06:59:25 UTC 2023 on pts/1
+[root@ip-172-31-34-151 ~]# yum install git -y
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+amzn2-core                                                                                                   | 3.6 kB  00:00:00
+amzn2extra-docker                                                                                            | 3.0 kB  00:00:00
+amzn2extra-kernel-5.10                                                                                       | 3.0 kB  00:00:00
+kubernetes                                                                                                   | 1.4 kB  00:00:00
+11 packages excluded due to repository priority protections
+Package git-2.40.1-1.amzn2.0.1.x86_64 already installed and latest version
+Nothing to do
+[root@ip-172-31-34-151 ~]# git clone  https://github.com/ashishrpandey/example-voting-app
+fatal: destination path 'example-voting-app' already exists and is not an empty directory.
+[root@ip-172-31-34-151 ~]#
+[root@ip-172-31-34-151 ~]#
+[root@ip-172-31-34-151 ~]# ls -lrt
+total 0
+drwxr-xr-x 8 root root 335 Sep 29 03:07 example-voting-app
+[root@ip-172-31-34-151 ~]# cd example-voting-app/
+[root@ip-172-31-34-151 example-voting-app]# ls -lrt
+total 96
+-rw-r--r-- 1 root root  2182 Sep 29 03:07 README.md
+-rw-r--r-- 1 root root   185 Sep 29 03:07 MAINTAINERS
+-rw-r--r-- 1 root root 10758 Sep 29 03:07 LICENSE
+-rw-r--r-- 1 root root  1692 Sep 29 03:07 docker-stack.yml
+-rw-r--r-- 1 root root   808 Sep 29 03:07 docker-compose.yml
+-rw-r--r-- 1 root root   400 Sep 29 03:07 docker-compose-simple.yml
+-rw-r--r-- 1 root root   808 Sep 29 03:07 docker-compose-javaworker.yml
+-rw-r--r-- 1 root root   609 Sep 29 03:07 dockercloud.yml
+-rw-r--r-- 1 root root 54824 Sep 29 03:07 architecture.png
+drwxr-xr-x 3 root root    70 Sep 29 03:07 worker
+drwxr-xr-x 4 root root    93 Sep 29 03:07 vote
+drwxr-xr-x 5 root root   133 Sep 29 03:07 result
+drwxr-xr-x 2 root root   250 Sep 29 03:07 k8s-specifications
+[root@ip-172-31-34-151 example-voting-app]# cd k8s-specifications
+[root@ip-172-31-34-151 k8s-specifications]# ls -lrt
+total 36
+-rw-r--r-- 1 root root 292 Sep 29 03:07 worker-deployment.yaml
+-rw-r--r-- 1 root root 192 Sep 29 03:07 vote-service.yaml
+-rw-r--r-- 1 root root 289 Sep 29 03:07 vote-deployment.yaml
+-rw-r--r-- 1 root root 195 Sep 29 03:07 result-service.yaml
+-rw-r--r-- 1 root root 299 Sep 29 03:07 result-deployment.yaml
+-rw-r--r-- 1 root root 152 Sep 29 03:07 redis-service.yaml
+-rw-r--r-- 1 root root 402 Sep 29 03:07 redis-deployment.yaml
+-rw-r--r-- 1 root root 146 Sep 29 03:07 db-service.yaml
+-rw-r--r-- 1 root root 401 Sep 29 03:07 db-deployment.yaml
+[root@ip-172-31-34-151 k8s-specifications]# kubectl apply -f .
+deployment.apps/db created
+service/db created
+deployment.apps/redis created
+service/redis created
+deployment.apps/result created
+service/result created
+deployment.apps/vote created
+service/vote created
+deployment.apps/worker created
+[root@ip-172-31-34-151 k8s-specifications]#
+[root@ip-172-31-34-151 k8s-specifications]#
+[root@ip-172-31-34-151 k8s-specifications]# kubectl get pods
+NAME                      READY   STATUS    RESTARTS   AGE
+db-b54cd94f4-2dw7w        1/1     Running   0          6s
+redis-868d64d78-v2kqp     1/1     Running   0          6s
+result-5d57b59f4b-j5sfb   1/1     Running   0          5s
+vote-94849dc97-zxxxz      1/1     Running   0          5s
+worker-dd46d7584-bpftw    1/1     Running   0          5s
+[root@ip-172-31-34-151 k8s-specifications]# kubectl get svc
+NAME         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+db           ClusterIP   10.99.104.128    <none>        5432/TCP         24s
+kubernetes   ClusterIP   10.96.0.1        <none>        443/TCP          113s
+redis        ClusterIP   10.105.8.213     <none>        6379/TCP         23s
+result       NodePort    10.101.50.173    <none>        5001:31001/TCP   23s
+vote         NodePort    10.110.153.231   <none>        5000:31000/TCP   23s
+[root@ip-172-31-34-151 k8s-specifications]#
+[root@ip-172-31-34-151 k8s-specifications]#
+
+
+[ec2-user@ip-172-31-34-151 ~]$
+[ec2-user@ip-172-31-34-151 ~]$
+[ec2-user@ip-172-31-34-151 ~]$ kubectl get pods
+NAME                      READY   STATUS    RESTARTS   AGE
+db-b54cd94f4-2dw7w        1/1     Running   0          2m27s
+redis-868d64d78-v2kqp     1/1     Running   0          2m27s
+result-5d57b59f4b-j5sfb   1/1     Running   0          2m26s
+vote-94849dc97-zxxxz      1/1     Running   0          2m26s
+worker-dd46d7584-bpftw    1/1     Running   0          2m26s
+[ec2-user@ip-172-31-34-151 ~]$ kubectl delete pod vote-94849dc97-zxxxz
+pod "vote-94849dc97-zxxxz" deleted
+[ec2-user@ip-172-31-34-151 ~]$
+
+[root@ip-172-31-34-151 k8s-specifications]#
+[root@ip-172-31-34-151 k8s-specifications]# kubectl logs vote-94849dc97-zxxxz -f
+[2023-10-03 03:24:15 +0000] [1] [INFO] Starting gunicorn 20.1.0
+[2023-10-03 03:24:15 +0000] [1] [INFO] Listening at: http://0.0.0.0:80 (1)
+[2023-10-03 03:24:15 +0000] [1] [INFO] Using worker: sync
+[2023-10-03 03:24:15 +0000] [6] [INFO] Booting worker with pid: 6
+[2023-10-03 03:24:15 +0000] [7] [INFO] Booting worker with pid: 7
+[2023-10-03 03:24:15 +0000] [8] [INFO] Booting worker with pid: 8
+[2023-10-03 03:24:15 +0000] [9] [INFO] Booting worker with pid: 9
+192.168.28.192 - - [03/Oct/2023:03:24:56 +0000] "GET / HTTP/1.1" 200 1293 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36 Edg/117.0.2045.47"
+192.168.28.192 - - [03/Oct/2023:03:24:57 +0000] "GET /static/stylesheets/style.css HTTP/1.1" 304 0 "http://13.250.27.212:31000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36 Edg/117.0.2045.47"
+192.168.28.192 - - [03/Oct/2023:03:24:58 +0000] "GET /favicon.ico HTTP/1.1" 404 207 "http://13.250.27.212:31000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36 Edg/117.0.2045.47"
+[2023-10-03 03:26:24,933] INFO in app: Received vote for a
+[2023-10-03 03:26:24 +0000] [6] [INFO] Received vote for a
+192.168.28.192 - - [03/Oct/2023:03:26:24 +0000] "POST / HTTP/1.1" 200 1696 "http://13.250.27.212:31000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36 Edg/117.0.2045.47"
+192.168.28.192 - - [03/Oct/2023:03:26:25 +0000] "GET /static/stylesheets/style.css HTTP/1.1" 304 0 "http://13.250.27.212:31000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36 Edg/117.0.2045.47"
+[2023-10-03 03:26:49 +0000] [1] [INFO] Handling signal: term
+[2023-10-03 03:26:49 +0000] [6] [INFO] Worker exiting (pid: 6)
+[2023-10-03 03:26:49 +0000] [7] [INFO] Worker exiting (pid: 7)
+[2023-10-03 03:26:49 +0000] [8] [INFO] Worker exiting (pid: 8)
+[2023-10-03 03:26:49 +0000] [9] [INFO] Worker exiting (pid: 9)
+[2023-10-03 03:26:49 +0000] [1] [INFO] Shutting down: Master
+rpc error: code = Unknown desc = Error: No such container: ab6b724f6f7150bacae225c268b278ca2eb647d454a3804d533677dcdc76e0fb[root@ip-172-31-34-151 k8s-specifications]#
+[root@ip-172-31-34-151 k8s-specifications]#
+
+
+
+
